@@ -42,3 +42,18 @@ provinces = [
 provinces.each do |province|
   Province.create!(province)
 end
+
+# Seed the categories
+categories = [
+  "Single Board Computers",
+  "Power Supplies",
+  "Cases",
+  "Keyboards",
+  "Cooling",
+  "Kits",
+  "Expansions"
+]
+
+categories.each do |name|
+  Category.create!(name: name)
+end
