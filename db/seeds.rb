@@ -137,3 +137,33 @@ products = [
 products.each do |product|
   Product.create!(product)
 end
+
+# Seed categorizations
+def assign_category(product_name, category_names)
+  product = Product.find_by(name: product_name)
+  category_names.each do |cat_name|
+    category = Category.find_by(name: cat_name)
+    Categorization.find_or_create_by!(product: product, category: category)
+  end
+end
+
+assign_category("Lattepanda 3 Delta", ["Single Board Computers"])
+assign_category("OrangePi 5 Ultra", ["Single Board Computers"])
+assign_category("Pimoroni Inventor HAT Mini", ["Expansions"])
+assign_category("Raspberry Pi 3 Model B+", ["Single Board Computers"])
+assign_category("3 Model B Aluminum Alloy Case", ["Cases"])
+assign_category("Raspberry Pi 4 Model B 8GB Starter MAX Kit", ["Single Board Computers", "Kits"])
+assign_category("Raspberry Pi 5 16GB", ["Single Board Computers"])
+assign_category("USB-C AC Power Adapter w/ On/Off Switch", ["Power Supplies"])
+assign_category("Aluminum Heat Sink Kit", ["Cooling"])
+assign_category("Raspberry Pi Keyboard and Hub", ["Keyboards"])
+assign_category("Seeed Studio ODYSSEY X86J4125", ["Single Board Computers"])
+assign_category("Titan Case for LattePanda 3 Delta", ["Cases"])
+
+# Create admin user
+User.create!(
+  email: "admin@admin.com",
+  password: "admin",
+  password_confirmation: "admin",
+  admin: true
+)
