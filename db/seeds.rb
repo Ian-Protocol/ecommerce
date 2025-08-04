@@ -166,4 +166,4 @@ User.create!(
   password: "admin",
   password_confirmation: "admin",
   admin: true
-)
+)AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
