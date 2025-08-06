@@ -5,4 +5,5 @@ class Product < ApplicationRecord
     has_many :carts, through: :cart_items
     has_many :categorizations
     has_many :categories, through: :categorizations
+    has_one_attached :image
 end
