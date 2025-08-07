@@ -163,7 +163,10 @@ assign_category("Titan Case for LattePanda 3 Delta", ["Cases"])
 # Create admin user
 User.create!(
   email: "admin@admin.com",
-  password: "admin",
-  password_confirmation: "admin",
+  password: "password",
+  password_confirmation: "password",
   admin: true
-)AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+)
+
+# Create Active Admin user
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

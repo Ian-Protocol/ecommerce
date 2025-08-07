@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "store/index"
+  get "store/show"
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   resources :products
@@ -17,6 +19,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
-  # Change later
-  root "home#index"
+  # Change later - store index should be good for now.
+  root "store#index"
+
+  resources :products, only: [:index, :show], controller: "store"
 end
