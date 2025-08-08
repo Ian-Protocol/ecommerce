@@ -11,6 +11,7 @@
   validates :subtotal, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :tax, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :total, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  # Haven't put in tracking yet.
   
   def total_items
     order_items.sum(:quantity)

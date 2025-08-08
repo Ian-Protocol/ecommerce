@@ -8,7 +8,9 @@
   has_many :addresses
   has_one :cart
 
-  validates :email, presence: true
+  # Devise handles email and password validations!
+  # We only need to add validation for the admin field
+  validates :admin, inclusion: { in: [true, false] }
 
   def self.ransackable_attributes(auth_object = nil)
     ["id", "email", "created_at", "updated_at", "admin", "reset_password_token"]
