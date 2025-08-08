@@ -1,4 +1,4 @@
-class Address < ApplicationRecord
+  class Address < ApplicationRecord
   belongs_to :user
   belongs_to :province
 
@@ -12,5 +12,13 @@ class Address < ApplicationRecord
   def full_address
     address_parts = [street1, street2, city, province.name, postal_code].compact.reject(&:blank?)
     address_parts.join(", ")
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "user_id", "province_id", "street1", "street2", "city", "postal_code", "created_at", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["user", "province", "orders"]
   end
 end

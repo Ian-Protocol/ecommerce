@@ -160,13 +160,10 @@ assign_category("Raspberry Pi Keyboard and Hub", ["Keyboards"])
 assign_category("Seeed Studio ODYSSEY X86J4125", ["Single Board Computers"])
 assign_category("Titan Case for LattePanda 3 Delta", ["Cases"])
 
-# Create admin user
-User.create!(
-  email: "admin@admin.com",
-  password: "password",
-  password_confirmation: "password",
-  admin: true
-)
-
 # Create Active Admin user
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
+if Rails.env.development?
+  admin = AdminUser.find_or_initialize_by(email: 'admin@example.com')
+  admin.password = 'password'
+  admin.password_confirmation = 'password'
+  admin.save!
+end

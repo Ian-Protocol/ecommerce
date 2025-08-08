@@ -1,4 +1,4 @@
-class Order < ApplicationRecord
+  class Order < ApplicationRecord
   belongs_to :user
   belongs_to :address
 
@@ -13,5 +13,13 @@ class Order < ApplicationRecord
   
   def total_items
     order_items.sum(:quantity)
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "user_id", "address_id", "status", "subtotal", "tax", "total", "tracking", "ship_company", "ship_type", "created_at", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["user", "address", "order_items", "products"]
   end
 end
