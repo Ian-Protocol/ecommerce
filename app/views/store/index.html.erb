@@ -1,5 +1,29 @@
 <h1>All Products</h1>
 
+<div class="search-section">
+    <%= form_with url: root_path, method: :get, local: true do |f| %>
+      <div class="search-row">
+        <div class="search-field">
+          <%= f.label :search, "Search Products:" %>
+          <%= f.text_field :search, value: @search_query, placeholder: "Enter keywords..." %>
+        </div>
+        
+        <div class="search-field">
+          <%= f.label :category_id, "Filter by Category:" %>
+          <%= f.select :category_id, 
+              options_from_collection_for_select(@categories, :id, :name, @selected_category),
+              { prompt: "All Categories" },
+              { class: "category-select" } %>
+        </div>
+        
+        <div class="search-actions">
+          <%= f.submit "Search", class: "btn btn-primary" %>
+          <%= link_to "Clear", root_path, class: "btn btn-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
 <div class="products">
   <% @products.each do |product| %>
     <div class="product-card">
