@@ -1,6 +1,20 @@
 class StoreController < ApplicationController
   def index
-    @products = Product.includes(:categories).all
+    @categories = Category.all
+    @selected_category = params[:category_id]
+    @search_query = params[:search]
+    
+    @products = Product.includes(:categories)
+
+    # ILIKE is case Insensitive
+    if @search_query.present?
+      @products = @products.where("name ILIKE ? OR description ILIKE ?", "%#{@search_query}%", "%#{@search_query}%")
+    end
+    
+    # Ctegory filter
+    if @selected_category.present?
+      @products = @products.joins(:categories).where(categories: { id: @selected_category })
+    end
   end
 
   def show
