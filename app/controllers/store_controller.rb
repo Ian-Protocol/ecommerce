@@ -6,7 +6,7 @@ class StoreController < ApplicationController
     
     @products = Product.includes(:categories)
 
-    # ILIKE is case Insensitive
+    # SQLite is case insensitive for LIKE.
     if @search_query.present?
       @products = @products.where("name LIKE ? OR description LIKE ?", "%#{@search_query}%", "%#{@search_query}%")
     end
