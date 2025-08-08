@@ -1,0 +1,54 @@
+<div class="main">
+  <h1>Your Orders</h1>
+
+  <% if @orders.any? %>
+    <div class="row">
+      <% @orders.order(created_at: :desc).each do |order| %>
+        <div>
+          <div class="card">
+            <div>
+              <h5>Order #<%= order.id %></h5>
+              <span>
+                <%= order.status %>
+              </span>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div>
+                  <p><strong>Date:</strong> <%= order.created_at.strftime("%B %d, %Y") %></p>
+                  <p><strong>Items:</strong> <%= order.order_items.sum(:quantity) %></p>
+                  <p><strong>Subtotal:</strong> <%= number_to_currency(order.subtotal) %></p>
+                  <p><strong>Tax:</strong> <%= number_to_currency(order.tax) %></p>
+                  <p><strong>Total:</strong> <%= number_to_currency(order.total) %></p>
+                </div>
+                <div>
+                  <% if order.address %>
+                    <p><strong>Shipping Address:</strong></p>
+                    <small>
+                      <%= order.address.street1 %><br>
+                      <% if order.address.street2.present? %>
+                        <%= order.address.street2 %><br>
+                      <% end %>
+                      <%= order.address.city %>, <%= order.address.province.name %> <%= order.address.postal_code %>
+                    </small>
+                  <% end %>
+                </div>
+              </div>
+              <%= link_to "View Details", order_path(order), class: "btn btn-primary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div>
+      <h4>No Orders Yet</h4>
+      <p>You haven't placed any orders yet. Start shopping to see your orders here!</p>
+      <%= link_to "Browse Products", root_path, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= link_to "Continue Shopping", root_path, class: "btn btn-secondary" %>
+  </div>
+</div>

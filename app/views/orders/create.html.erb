@@ -1,0 +1,43 @@
+def create
+    cart = session[:cart] || {}
+    return redirect_to cart_path, alert: "Your cart is empty." if cart.empty?
+
+     ActiveRecord::Base.transaction do
+        if params[:address_id].present?
+            address = current_user.addresses.find(params[:address_id])
+        else
+            address = current_user.addresses.create!(
+            params.require(:address).permit(:street, :city, :province_id, :postal_code)
+        )
+        end
+
+        # Initialize a new order for the current user
+        @order = current_user.orders.build(
+            status: "Processing",
+            subtotal: 0,
+            tax: 0,
+            total: 0,
+            address: current_user.addresses.first
+        )
+
+        cart.each do |product_id, quantity|
+            product = Product.find_by(id: product_id)
+            next unless product
+
+            line_total = product.price * quantity.to_i
+
+            @order.order_items.build(
+                product: product,
+                quantity: quantity,
+                price: product.price
+            )
+
+            @order.subtotal += line_total
+        end
+
+    session[:cart] = {}
+    redirect_to order_path(order), notice: "Order placed successfully!"
+  end
+rescue => e
+  redirect_to new_order_path, alert: "There was a problem placing your order: #{e.message}"
+end

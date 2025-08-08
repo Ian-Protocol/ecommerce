@@ -1,0 +1,51 @@
+<h1>Order Confirmation</h1>
+
+<p><strong>Order ID:</strong> <%= @order.id %></p>
+<p><strong>Status:</strong> <%= @order.status %></p>
+<p><strong>Order Date:</strong> <%= @order.created_at.strftime("%B %d, %Y") %></p>
+
+<hr>
+
+<h2>Shipping Address</h2>
+<% if @order.address %>
+  <p>
+    <%= @order.address.street1 %><br>
+    <% if @order.address.street2.present? %>
+      <%= @order.address.street2 %><br>
+    <% end %>
+    <%= @order.address.city %>, <%= @order.address.province.name %> <%= @order.address.postal_code %>
+  </p>
+<% end %>
+
+<hr>
+
+<h2>Order Summary</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Unit Price</th>
+      <th>Line Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_items.each do |item| %>
+      <tr>
+        <td><%= item.product.name %></td>
+        <td><%= item.quantity %></td>
+        <td><%= number_to_currency(item.price) %></td>
+        <td><%= number_to_currency(item.price * item.quantity) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr>
+
+<h3>Subtotal: <%= number_to_currency(@order.subtotal) %></h3>
+<h3>Tax: <%= number_to_currency(@order.tax) %></h3>
+<h2>Total: <%= number_to_currency(@order.total) %></h2>
+
+<%= link_to "Back to Store", store_index_path, class: "btn btn-primary" %>

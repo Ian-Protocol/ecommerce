@@ -1,9 +1,11 @@
 class CartController < ApplicationController
   def show
+    cart = session[:cart] || {}
     @cart_items = current_cart.map do |product_id, quantity|
       product = Product.find_by(id: product_id)
       next unless product
       { product: product, quantity: quantity }
+    # Remove nil entries in case a product was deleted.
     end.compact
 
     @total = @cart_items.sum { |item| item[:product].price * item[:quantity] }

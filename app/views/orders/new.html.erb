@@ -1,0 +1,99 @@
+<h1>Checkout</h1>
+
+<% if @cart_items.present? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cart_items.each do |item| %>
+        <tr>
+          <td><%= item[:product].name %></td>
+          <td><%= item[:quantity] %></td>
+          <td><%= number_to_currency(item[:product].price) %></td>
+          <td><%= number_to_currency(item[:product].price * item[:quantity]) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h2>Select Shipping Address</h2>
+
+  <%= form_with model: @order, url: orders_path, method: :post do |f| %>
+    <% if @addresses.any? %>
+      <p>
+        <%= label_tag :address_id, "Choose an address:" %><br>
+        <%= select_tag :address_id, options_from_collection_for_select(@addresses, :id, :full_address), prompt: "Select address" %>
+      </p>
+
+      <h3>Or enter a new address:</h3>
+    <% else %>
+      <p>No saved addresses found. Please enter a new one below.</p>
+    <% end %>
+
+    <%= f.fields_for :address, @new_address do |a| %>
+      <% if @new_address.errors.any? %>
+        <div class="alert alert-danger">
+          <ul>
+            <% @new_address.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <p>
+        <%= a.label :street1, "Street Address" %><br>
+        <%= a.text_field :street1, class: "form-control #{'is-invalid' if @new_address.errors[:street1].any?}" %>
+        <% if @new_address.errors[:street1].any? %>
+          <div class="invalid-feedback"><%= @new_address.errors[:street1].first %></div>
+        <% end %>
+      </p>
+      
+      <p>
+        <%= a.label :street2, "Street Address 2 (Optional)" %><br>
+        <%= a.text_field :street2, class: "form-control" %>
+      </p>
+      
+      <p>
+        <%= a.label :city %><br>
+        <%= a.text_field :city, class: "form-control #{'is-invalid' if @new_address.errors[:city].any?}" %>
+        <% if @new_address.errors[:city].any? %>
+          <div class="invalid-feedback"><%= @new_address.errors[:city].first %></div>
+        <% end %>
+      </p>
+      
+      <p>
+        <%= a.label :province_id, "Province" %><br>
+        <%= a.collection_select :province_id, Province.all, :id, :name, 
+            { prompt: "Select Province" }, 
+            { class: "form-control #{'is-invalid' if @new_address.errors[:province_id].any?}" } %>
+        <% if @new_address.errors[:province_id].any? %>
+          <div class="invalid-feedback"><%= @new_address.errors[:province_id].first %></div>
+        <% end %>
+      </p>
+      
+      <p>
+        <%= a.label :postal_code, "Postal Code (e.g., K1A 0A6)" %><br>
+        <%= a.text_field :postal_code, class: "form-control #{'is-invalid' if @new_address.errors[:postal_code].any?}" %>
+        <% if @new_address.errors[:postal_code].any? %>
+          <div class="invalid-feedback"><%= @new_address.errors[:postal_code].first %></div>
+        <% end %>
+      </p>
+    <% end %>
+
+    <p>Confirm your order and click below to place it.</p>
+    <%= f.submit "Place Order", class: "btn btn-success" %>
+  <% end %>
+
+<% else %>
+  <p>Your cart is empty.</p>
+<% end %>
+
+<%= link_to "Continue Shopping", store_index_path, class: "btn btn-primary" %>
+<%= link_to "Back to Cart", cart_path, class: "btn btn-secondary" %>
