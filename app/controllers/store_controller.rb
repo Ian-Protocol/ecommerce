@@ -8,7 +8,7 @@ class StoreController < ApplicationController
 
     # ILIKE is case Insensitive
     if @search_query.present?
-      @products = @products.where("name ILIKE ? OR description ILIKE ?", "%#{@search_query}%", "%#{@search_query}%")
+      @products = @products.where("name LIKE ? OR description LIKE ?", "%#{@search_query}%", "%#{@search_query}%")
     end
     
     # Ctegory filter
