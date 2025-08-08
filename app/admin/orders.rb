@@ -5,7 +5,7 @@ ActiveAdmin.register Order do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :user_id, :status, :subtotal, :tax, :total, :address_id, :tracking, :ship_company, :ship_type
+  permit_params :user_id, :status, :subtotal, :tax, :total, :address_id, :tracking, :ship_company, :ship_type
   #
   # or
   #
