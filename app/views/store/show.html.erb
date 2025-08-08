@@ -5,4 +5,8 @@
 <p>Stock: <%= @product.stock_quantity %></p>
 <p>Categories: <%= @product.categories.map(&:name).join(", ") %></p>
 
+<% if user_signed_in? %>
+  <%= button_to "Add to Cart", add_to_cart_path(@product), method: :post %>
+<% end %>
+
 <%= link_to "Back to Products", root_path %>

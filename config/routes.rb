@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  # get "cart/show"
+  # get "cart/add"
+  # get "cart/update"
+  # get "cart/remove"
+  get "/cart", to: "cart#show", as: :cart
+  post "/cart/add/:product_id", to: "cart#add", as: :add_to_cart
+  patch "/cart/update/:product_id", to: "cart#update", as: :update_cart
+  delete "/cart/remove/:product_id", to: "cart#remove", as: :remove_from_cart
   get "store/index"
   get "store/show"
   devise_for :admin_users, ActiveAdmin::Devise.config
