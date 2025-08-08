@@ -24,6 +24,20 @@
     <% end %>
   </div>
 
+  <% if @search_query.present? || @selected_category.present? %>
+    <div>
+      <p>
+        Found <%= @products.count %> product<%= 's' unless @products.count == 1 %>
+        <% if @search_query.present? %>
+          matching "<%= @search_query %>"
+        <% end %>
+        <% if @selected_category.present? %>
+          in <%= Category.find(@selected_category).name %>
+        <% end %>
+      </p>
+    </div>
+  <% end %>
+
 <div class="products">
   <% @products.each do |product| %>
     <div class="product-card">
