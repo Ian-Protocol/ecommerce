@@ -39,16 +39,24 @@
   <% end %>
 
 <div class="products">
-  <% @products.each do |product| %>
-    <div class="product-card">
-      <h3><%= link_to product.name, product_path(product) %></h3>
-      <p><%= number_to_currency(product.price) %></p>
-      <p>Stock: <%= product.stock_quantity %></p>
-      <p>Categories: <%= product.categories.map(&:name).join(", ") %></p>
-      
-      <% if user_signed_in? %>
-        <%= button_to "Add to Cart", add_to_cart_path(product), method: :post %>
+  <% if @products.any? %>
+      <% @products.each do |product| %>
+        <div class="product-card">
+          <h3><%= link_to product.name, product_path(product) %></h3>
+          <p><%= number_to_currency(product.price) %></p>
+          <p>Stock: <%= product.stock_quantity %></p>
+          <p>Categories: <%= product.categories.map(&:name).join(", ") %></p>
+          
+          <% if user_signed_in? %>
+            <%= button_to "Add to Cart", add_to_cart_path(product), method: :post %>
+          <% end %>
+        </div>
       <% end %>
-    </div>
-  <% end %>
+    <% else %>
+      <div class="no-results">
+        <p>No products found matching your search criteria.</p>
+        <p><%= link_to "View all products", root_path %></p>
+      </div>
+    <% end %>
+  </div>
 </div>
