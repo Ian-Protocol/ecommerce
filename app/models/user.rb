@@ -8,6 +8,8 @@
   has_many :addresses
   has_one :cart
 
+  validates :email, presence: true
+
   def self.ransackable_attributes(auth_object = nil)
     ["id", "email", "created_at", "updated_at", "admin", "reset_password_token"]
   end

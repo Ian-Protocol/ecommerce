@@ -6,6 +6,7 @@
   has_many :products, through: :order_items
   accepts_nested_attributes_for :address
 
+  # Remember %w creates an array of strings!
   validates :status, presence: true, inclusion: { in: %w[Pending Processing Shipped Delivered Cancelled] }
   validates :subtotal, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :tax, presence: true, numericality: { greater_than_or_equal_to: 0 }

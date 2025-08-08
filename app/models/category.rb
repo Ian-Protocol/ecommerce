@@ -2,6 +2,8 @@ class Category < ApplicationRecord
     has_many :categorizations
     has_many :products, through: :categorizations
 
+    validates :name, presence: true, length: { minimum: 2, maximum: 50 }, uniqueness: true
+
   def self.ransackable_associations(auth_object = nil)
     ["categorizations", "products"]
   end
